@@ -6,21 +6,33 @@ class CampersController < ApplicationController
     end 
 
     def show
-        camper = Camper.find_by(id: params[:id])
-        if camper
-            render json: camper, serializer: CamperActivitySerializer
-        else 
-            render json: { error: "Camper not found" }, status: :not_found
-        end
+        camper = Camper.find(params[:id])
+        render json: camper, serializer: CamperActivitySerializer
     end 
 
+    # def show
+    #     begin 
+    #         camper = Camper.find(params[:id])
+    #         render json: camper, serializer: CamperActivitySerializer
+    #     rescue ActiveRecord:RecordNotFound => err
+    #         render json: { error: err }, status: :not_found
+    #     end 
+    # end 
+        
+
     def create 
-        camper = Camper.create(camper_params)
+        camper = Camper.create!(camper_params)
         render json: camper, status: :created
-        # else 
-        #     render json: { error: "validation errors" }, status: :unprocessable_entity
-        # end 
     end 
+
+    # def create 
+    #     camper = Camper.create(camper_params)
+    #     if camper.id
+    #         render json: camper, status: :created
+    #     else
+    #         render json: { errors: camper.errors.full_messages}, status: :unprocessable_entity
+    #     end
+    # end
 
     private
 
